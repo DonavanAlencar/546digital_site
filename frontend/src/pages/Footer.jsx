@@ -15,7 +15,7 @@ export default function Footer() {
                 <p className="mt-3 mb-4">Somos uma agência digital fora do padrão, onde inovação, estratégia e inteligência artificial se unem para criar resultados exponenciais.</p>
                 <form action="">
                   <div className="input-group">
-                    <input type="text" className="form-control border-white p-3" placeholder="Your Email" />
+                    <input type="text" className="form-control border-white p-3" placeholder="Seu E-mail" />
                     <button className="btn btn-dark">Enviar</button>
                   </div>
                 </form>
@@ -25,7 +25,7 @@ export default function Footer() {
               <div className="row gx-5">
                 <div className="col-lg-4 col-md-12 pt-5 mb-5">
                   <div className="section-title section-title-sm position-relative pb-3 mb-4">
-                    <h3 className="text-light mb-0">Get In Touch</h3>
+                    <h3 className="text-light mb-0">Entre em Contato</h3>
                   </div>
                   <div className="d-flex mb-2">
                     <i className="bi bi-envelope-open text-primary me-2"></i>
@@ -33,7 +33,7 @@ export default function Footer() {
                   </div>
                   <div className="d-flex mb-2">
                     <i className="bi bi-telephone text-primary me-2"></i>
-                    <p className="mb-0">+011 98678-0840</p>
+                    <p className="mb-0">+55 11 98678-0840</p>
                   </div>
                   <div className="d-flex mt-4">
                     <a className="btn btn-primary btn-square me-2" href="#"><i className="fab fa-twitter fw-normal"></i></a>
@@ -44,7 +44,7 @@ export default function Footer() {
                 </div>
                 <div className="col-lg-4 col-md-12 pt-0 pt-lg-5 mb-5">
                   <div className="section-title section-title-sm position-relative pb-3 mb-4">
-                    <h3 className="text-light mb-0">Links</h3>
+                    <h3 className="text-light mb-0">Acesso Rápido</h3>
                   </div>
                   <div className="link-animated d-flex flex-column justify-content-start">
                     <a className="text-light mb-2" href="#"><i className="bi bi-arrow-right text-primary me-2"></i>Principal</a>
