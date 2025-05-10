@@ -29,8 +29,8 @@ export default function Carosel() {
                     <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div className="p-3" style={{ maxWidth: '900px' }}>
                             <h5 className="text-white text-uppercase mb-3 animated slideInDown">Seu Negócio no Topo!</h5>
-                            <h1 className="display-1 text-white mb-md-4 animated zoomIn">Branding e IA para escalar seu negócio</h1>
-                            <a href="" className="btn btn-outline-light py-md-3 px-md-5 animated slideInRight">Quero Agora</a>
+                            <h1 className="display-1 text-white mb-md-4 animated zoomIn"> IA para escalar seu negócio</h1>
+                            <a href="" className="btn btn-outline-light py-md-3 px-md-5 animated slideInRight">Contate-nos</a>
                         </div>
                     </div>
                 </div>
@@ -39,7 +39,7 @@ export default function Carosel() {
                     <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                         <div className="p-3" style={{ maxWidth: '900px' }}>
                             <h5 className="text-white text-uppercase mb-3 animated slideInDown">Estratégias Digitais Que Convertem!</h5>
-                            <h1 className="display-1 text-white mb-md-4 animated zoomIn">SEO, Tráfego Pago, Social Media</h1>
+                            <h1 className="display-1 text-white mb-md-4 animated zoomIn">SEO, Tráfego Pago, Social Media, Copywriting</h1>
                             <a href="" className="btn btn-outline-light py-md-3 px-md-5 animated slideInRight">Contate-nos</a>
                         </div>
                     </div>

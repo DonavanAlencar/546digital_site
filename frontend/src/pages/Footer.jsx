@@ -31,12 +31,7 @@ export default function Footer() {
                     <i className="bi bi-envelope-open text-primary me-2"></i>
                     <p className="mb-0">546digital.agencia@gmail.com</p>
                   </div>
-                  <div className="d-flex mb-2">
-                    <i className="bi bi-telephone text-primary me-2"></i>
-                    <p className="mb-0">+55 11 98678-0840</p>
-                  </div>
                   <div className="d-flex mt-4">
-                    <a className="btn btn-primary btn-square me-2" href="#"><i className="fab fa-twitter fw-normal"></i></a>
                     <a className="btn btn-primary btn-square me-2" href="#"><i className="fab fa-facebook-f fw-normal"></i></a>
                     <a className="btn btn-primary btn-square me-2" href="#"><i className="fab fa-linkedin-in fw-normal"></i></a>
                     <a className="btn btn-primary btn-square" href="#"><i className="fab fa-instagram fw-normal"></i></a>

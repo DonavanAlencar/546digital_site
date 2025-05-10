@@ -7,7 +7,6 @@ export default function Topbar() {
         <div className="row gx-0">
             <div className="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
                 <div className="d-inline-flex align-items-center" style={{ height: '45px' }}>
-                    <small className="me-3 text-light"><i className="fa fa-phone-alt me-2"></i>+55 11 98678-0840</small>
                     <small className="text-light"><i className="fa fa-envelope-open me-2"></i>546digital.agencia@gmail.com</small>
                 </div>
             </div>
