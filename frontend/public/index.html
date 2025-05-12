@@ -47,23 +47,27 @@
       cursor: pointer;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       z-index: 1000;
+      transition: width .2s, height .2s;
     }
     #chat-button:hover { background: #0b5ed7; }
 
-    /* Caixa de chat: tamanho fixo e overflow escondido */
+    /* Caixa de chat: medidas adaptáveis */
     #chat-box {
       position: fixed;
       bottom: 100px;
       right: 24px;
-      width: 320px;
-      height: 500px;          /* altura fixa */
+      width: 90vw;
+      max-width: 360px;
+      height: 70vh;
+      max-height: 600px;
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.2);
       display: none;
       flex-direction: column;
-      overflow: hidden;       /* evita que o conteúdo “escape” */
+      overflow: hidden;
       z-index: 1000;
+      transition: width .2s, height .2s, bottom .2s, right .2s;
     }
     #chat-box.show { display: flex; }
 
@@ -79,37 +83,28 @@
     }
     #chat-box-header .close-chat { cursor: pointer; font-size: 1.2rem; }
 
-    /* Conteúdo: restringe overflow aqui, não no container principal */
+    /* Conteúdo */
     #chat-box-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       padding: 8px;
-      overflow: hidden; /* garante que só o #chat-log role */
+      overflow: hidden;
     }
 
-    /* Histórico de mensagens: fixa sua altura e ativa scroll */
+    /* Histórico de mensagens */
     #chat-log {
-      /* ocupa todo o espaço sobrando dentro de #chat-box-content menos a área de input (~50px) */
       height: calc(100% - 50px);
-      overflow-y: auto;       /* ativa a barra de rolagem vertical */
-      overflow-x: hidden;     /* evita scroll horizontal */
+      overflow-y: auto;
+      overflow-x: hidden;
       margin-bottom: 8px;
       font-size: 0.9rem;
-      word-break: break-word;  /* quebra palavras muito longas, impedindo overflow */
+      word-break: break-word;
     }
-    
-    /* Estilos de mensagem */
-    #chat-log .user-msg {
-      text-align: right;
-      margin-bottom: 6px;
-    }
-    #chat-log .bot-msg {
-      text-align: left;
-      margin-bottom: 6px;
-    }
+    #chat-log .user-msg { text-align: right; margin-bottom: 6px; }
+    #chat-log .bot-msg  { text-align: left;  margin-bottom: 6px; }
 
-    /* Área de input */
+    /* Input e botão */
     #chat-input-container {
       display: flex;
       gap: 8px;
@@ -135,11 +130,34 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
+
+    /* Ajustes para telas pequenas */
+    @media (max-width: 576px) {
+      #chat-box {
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 60%;
+        border-radius: 8px 8px 0 0;
+      }
+      #chat-button {
+        bottom: 16px;
+        right: 16px;
+        width: 50px;
+        height: 50px;
+      }
+      #chat-box-header {
+        padding: 8px;
+        font-size: 1rem;
+      }
+      #chat-input, #send-button {
+        font-size: 0.85rem;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <!-- Container React -->
   <div id="root"></div>
 
   <!-- Chat Button -->
@@ -165,21 +183,16 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" defer></script>
   <script src="./lib/owlcarousel/owl.carousel.min.js" defer></script>
   <script src="./lib/animate/animate.min.js" defer></script>
-  <!-- Seu bundle React (gerado pelo build) -->
   <script src="/static/js/client.js" defer></script>
-  <!-- Chat toggle & envio -->
   <script defer>
-    // --- captura e suprime erros vindos de arquivos com '<' inesperado ---
-    window.onerror = function(message, source, lineno, colno, error) {
+    window.onerror = function(message, source) {
       if (source && (source.endsWith('animate.min.js') || source.endsWith('client.js'))) {
-        // suprime o erro e não propaga
         return true;
       }
-      // deixa o navegador logar quaisquer outros erros normalmente
       return false;
     };
 
-    const WEBHOOK_URL = 'https://desenvlab.com.br/n8n/webhook/db1776fe-6aa1-4f0a-a5ac-6f6b784486ea';
+    const WEBHOOK_URL = 'https://desenvlab.com.br/n8n/webhook/assistent_rag_rest';
 
     document.addEventListener('DOMContentLoaded', () => {
       const chatButton = document.getElementById('chat-button');
@@ -197,9 +210,12 @@
       input.addEventListener('input', () => {
         send.disabled = !input.value.trim();
       });
+
       send.addEventListener('click', async () => {
         const msg = input.value.trim();
         if (!msg) return;
+
+        // Exibe mensagem do usuário
         log.innerHTML += `<div class="user-msg"><strong>Você:</strong> ${msg}</div>`;
         input.value = '';
         send.disabled = true;
@@ -212,13 +228,17 @@
             body: JSON.stringify({ message: msg })
           });
           if (!res.ok) throw new Error(res.statusText);
+
+          // Lê apenas o campo 'output' do JSON
           const data = await res.json();
-          const botText = data.response?.text || 'Sem resposta.';
+          const botText = data.output || 'Sem resposta.';
+
           log.innerHTML += `<div class="bot-msg"><strong>Bot:</strong> ${botText}</div>`;
         } catch (err) {
           console.error(err);
           log.innerHTML += `<div class="bot-msg" style="color:red"><em>Erro ao obter resposta.</em></div>`;
         }
+
         log.scrollTop = log.scrollHeight;
       });
     });
