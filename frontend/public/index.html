@@ -31,6 +31,13 @@
   <link href="./css/style.css" rel="stylesheet">
 
   <style>
+    /* Blinking effect */
+    @keyframes blink {
+      0%, 100% { visibility: visible; }
+      50% { visibility: hidden; }
+    }
+    .blinking { animation: blink 1s steps(2, start) infinite; }
+
     /* Botão flutuante */
     #chat-button {
       position: fixed;
@@ -51,7 +58,7 @@
     }
     #chat-button:hover { background: #0b5ed7; }
 
-    /* Caixa de chat: medidas adaptáveis */
+    /* Caixa de chat */
     #chat-box {
       position: fixed;
       bottom: 100px;
@@ -91,8 +98,6 @@
       padding: 8px;
       overflow: hidden;
     }
-
-    /* Histórico de mensagens */
     #chat-log {
       height: calc(100% - 50px);
       overflow-y: auto;
@@ -131,7 +136,7 @@
       cursor: not-allowed;
     }
 
-    /* Ajustes para telas pequenas */
+    /* Responsivo */
     @media (max-width: 576px) {
       #chat-box {
         bottom: 0;
@@ -202,15 +207,46 @@
       const send       = document.getElementById('send-button');
       const log        = document.getElementById('chat-log');
 
+      // Função para exibir indicador de digitação
+      function showTypingIndicator(duration = 6000) {
+        // Remove indicador anterior, se houver
+        const prev = document.getElementById('typing-indicator');
+        if (prev) prev.remove();
+
+        const indicator = document.createElement('div');
+        indicator.id = 'typing-indicator';
+        indicator.className = 'bot-msg blinking';
+        indicator.innerHTML = '<strong>Alguém está escrevendo...</strong>';
+        log.appendChild(indicator);
+        log.scrollTop = log.scrollHeight;
+
+        return new Promise(res => {
+          setTimeout(() => {
+            indicator.remove();
+            res();
+          }, duration);
+        });
+      }
+
+      // Abre o chat automaticamente e exibe saudação
+      chatBox.classList.add('show');
+      input.focus();
+      showTypingIndicator().then(() => {
+        log.innerHTML += `<div class="bot-msg"><strong>Estamos online, agora é só digitar... 🤩🤩🤩🤩</strong></div>`;
+        log.scrollTop = log.scrollHeight;
+      });
+
+      // Eventos de UI
       chatButton.addEventListener('click', () => {
         chatBox.classList.toggle('show');
-        input.focus();
+        if (chatBox.classList.contains('show')) input.focus();
       });
       closeChat.addEventListener('click', () => chatBox.classList.remove('show'));
       input.addEventListener('input', () => {
         send.disabled = !input.value.trim();
       });
 
+      // Envio de mensagem
       send.addEventListener('click', async () => {
         const msg = input.value.trim();
         if (!msg) return;
@@ -221,6 +257,9 @@
         send.disabled = true;
         log.scrollTop = log.scrollHeight;
 
+        // Exibe indicador antes de chamar o webhook
+        await showTypingIndicator();
+
         try {
           const res = await fetch(WEBHOOK_URL, {
             method: 'POST',
@@ -229,7 +268,6 @@
           });
           if (!res.ok) throw new Error(res.statusText);
 
-          // Lê apenas o campo 'output' do JSON
           const data = await res.json();
           const botText = data.output || 'Sem resposta.';
 

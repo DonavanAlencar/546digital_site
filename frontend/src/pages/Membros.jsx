@@ -15,8 +15,7 @@ export default function Membros() {
                         <div className="team-img position-relative overflow-hidden">
                             <img className="img-fluid w-100" src="img/Guilherme.jpeg" alt="" />
                             <div className="team-social">
-                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href=""><i className="fab fa-facebook-f fw-normal"></i></a>
-                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href=""><i className="fab fa-instagram fw-normal"></i></a>
+                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href="https://www.instagram.com/seocomgui"><i className="fab fa-instagram fw-normal"></i></a>
                             </div>
                         </div>
                         <div className="text-center py-4">
@@ -28,10 +27,9 @@ export default function Membros() {
                 <div className="col-lg-4 wow slideInUp" data-wow-delay="0.6s">
                     <div className="team-item bg-light rounded overflow-hidden">
                         <div className="team-img position-relative overflow-hidden">
-                            <img className="img-fluid w-100" src="img/team-2.jpg" alt="" />
+                            <img className="img-fluid w-100" src="img/AdrianoLincoln.jpeg" alt="" />
                             <div className="team-social">
-                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href=""><i className="fab fa-facebook-f fw-normal"></i></a>
-                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href=""><i className="fab fa-instagram fw-normal"></i></a>
+                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href="https://www.instagram.com/adrianolincoln.oficial"><i className="fab fa-instagram fw-normal"></i></a>
                             </div>
                         </div>
                         <div className="text-center py-4">
@@ -45,8 +43,7 @@ export default function Membros() {
                         <div className="team-img position-relative overflow-hidden">
                             <img className="img-fluid w-100" src="img/team-3.jpg" alt="" />
                             <div className="team-social">
-                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href=""><i className="fab fa-facebook-f fw-normal"></i></a>
-                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href=""><i className="fab fa-instagram fw-normal"></i></a>
+                                <a className="btn btn-lg btn-primary btn-lg-square rounded" href="https://www.instagram.com/marcelonarita23/"><i className="fab fa-instagram fw-normal"></i></a>
                             </div>
                         </div>
                         <div className="text-center py-4">
