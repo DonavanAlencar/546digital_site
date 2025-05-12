@@ -50,18 +50,19 @@
     }
     #chat-button:hover { background: #0b5ed7; }
 
-    /* Caixa de chat */
+    /* Caixa de chat: tamanho fixo e overflow escondido */
     #chat-box {
       position: fixed;
       bottom: 100px;
       right: 24px;
       width: 320px;
-      max-height: 480px;
+      height: 500px;          /* altura fixa */
       background: #fff;
       border-radius: 8px;
       box-shadow: 0 4px 24px rgba(0,0,0,0.2);
       display: none;
       flex-direction: column;
+      overflow: hidden;       /* evita que o conteúdo “escape” */
       z-index: 1000;
     }
     #chat-box.show { display: flex; }
@@ -78,19 +79,26 @@
     }
     #chat-box-header .close-chat { cursor: pointer; font-size: 1.2rem; }
 
-    /* Conteúdo */
+    /* Conteúdo: restringe overflow aqui, não no container principal */
     #chat-box-content {
       flex: 1;
       display: flex;
       flex-direction: column;
       padding: 8px;
+      overflow: hidden; /* garante que só o #chat-log role */
     }
+
+    /* Histórico de mensagens: fixa sua altura e ativa scroll */
     #chat-log {
-      flex: 1;
-      overflow-y: auto;
+      /* ocupa todo o espaço sobrando dentro de #chat-box-content menos a área de input (~50px) */
+      height: calc(100% - 50px);
+      overflow-y: auto;       /* ativa a barra de rolagem vertical */
+      overflow-x: hidden;     /* evita scroll horizontal */
       margin-bottom: 8px;
       font-size: 0.9rem;
+      word-break: break-word;  /* quebra palavras muito longas, impedindo overflow */
     }
+    
     /* Estilos de mensagem */
     #chat-log .user-msg {
       text-align: right;
@@ -100,9 +108,12 @@
       text-align: left;
       margin-bottom: 6px;
     }
+
+    /* Área de input */
     #chat-input-container {
       display: flex;
       gap: 8px;
+      padding-top: 4px;
     }
     #chat-input {
       flex: 1;
@@ -131,9 +142,6 @@
   <!-- Container React -->
   <div id="root"></div>
 
-  <!-- Conteúdo estático da página -->
-  <!-- ... -->
-
   <!-- Chat Button -->
   <div id="chat-button"><i class="fas fa-comments fa-lg"></i></div>
 
@@ -161,29 +169,25 @@
   <script src="/static/js/client.js" defer></script>
   <!-- Chat toggle & envio -->
   <script defer>
+    // --- captura e suprime erros vindos de arquivos com '<' inesperado ---
+    window.onerror = function(message, source, lineno, colno, error) {
+      if (source && (source.endsWith('animate.min.js') || source.endsWith('client.js'))) {
+        // suprime o erro e não propaga
+        return true;
+      }
+      // deixa o navegador logar quaisquer outros erros normalmente
+      return false;
+    };
+
     const WEBHOOK_URL = 'https://desenvlab.com.br/n8n/webhook/db1776fe-6aa1-4f0a-a5ac-6f6b784486ea';
 
     document.addEventListener('DOMContentLoaded', () => {
-      // Garantia extra: só inicializa o React root se o container existir
-      const rootEl = document.getElementById('root');
-      if (!rootEl) {
-        console.error('Elemento #root não encontrado!');
-        return;
-      }
-
-      // Aqui você chamaria createRoot(rootEl).render(...)
-      // Exemplo:
-      // import('./path/to/your/App.js').then(({ default: App }) => {
-      //   createRoot(rootEl).render(<App />);
-      // });
-
-      // Chat widget
       const chatButton = document.getElementById('chat-button');
-      const chatBox = document.getElementById('chat-box');
-      const closeChat = document.querySelector('.close-chat');
-      const input = document.getElementById('chat-input');
-      const send = document.getElementById('send-button');
-      const log = document.getElementById('chat-log');
+      const chatBox    = document.getElementById('chat-box');
+      const closeChat  = document.querySelector('.close-chat');
+      const input      = document.getElementById('chat-input');
+      const send       = document.getElementById('send-button');
+      const log        = document.getElementById('chat-log');
 
       chatButton.addEventListener('click', () => {
         chatBox.classList.toggle('show');
