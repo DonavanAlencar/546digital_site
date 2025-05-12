@@ -279,7 +279,7 @@
           if (!res.ok) throw new Error(res.statusText);
           const data = await res.json();
           const botText = data.output || 'Sem resposta.';
-          log.innerHTML += `<div class="bot-msg"><strong>Bot:</strong> ${botText}</div>`;
+          log.innerHTML += `<div class="bot-msg"><strong>Ana:</strong> ${botText}</div>`;
         } catch (err) {
           console.error(err);
           log.innerHTML += `<div class="bot-msg" style="color:red"><em>Erro ao obter resposta.</em></div>`;

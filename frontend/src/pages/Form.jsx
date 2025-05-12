@@ -40,7 +40,7 @@ export default function Form() {
                                     <textarea className="form-control bg-light border-0" rows="3" placeholder="Mensagem"></textarea>
                                 </div>
                                 <div className="col-12">
-                                    <button className="btn btn-dark w-100 py-3" type="submit">Quero uma cotação agora!</button>
+                                    <button className="btn btn-dark w-100 py-3" type="submit">Quero uma cotação anom gora!</button>
                                 </div>
                             </div>
                         </form>
