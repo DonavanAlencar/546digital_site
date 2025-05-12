@@ -19,7 +19,7 @@ export default function Membros() {
                             </div>
                         </div>
                         <div className="text-center py-4">
-                            <h4 className="text-primary">Guilherme</h4>
+                            <h4 className="text-primary">Guilherme Santos</h4>
                             <p className="text-uppercase m-0">Especialista em SEO</p>
                         </div>
                     </div>

@@ -14,9 +14,7 @@
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Icon Font Stylesheet -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -32,148 +30,85 @@
 
   <style>
     /* Blinking effect */
-    @keyframes blink {
-      0%, 100% { visibility: visible; }
-      50% { visibility: hidden; }
-    }
-    .blinking { animation: blink 1s steps(2, start) infinite; }
+    @keyframes blink { 0%,100% { visibility: visible; } 50% { visibility: hidden; } }
+    .blinking { animation: blink 1s steps(2,start) infinite; }
 
     /* Botão flutuante */
     #chat-button {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #0d6efd;
-      color: #fff;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      z-index: 1000;
-      transition: width .2s, height .2s;
+      position: fixed; bottom: 24px; right: 24px;
+      background: #0d6efd; color: #fff; width: 60px; height: 60px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 1000;
+      transition: width .2s,height .2s;
     }
     #chat-button:hover { background: #0b5ed7; }
 
     /* Caixa de chat */
     #chat-box {
-      position: fixed;
-      bottom: 100px;
-      right: 24px;
-      width: 90vw;
-      max-width: 360px;
-      height: 70vh;
-      max-height: 600px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-      display: none;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 1000;
-      transition: width .2s, height .2s, bottom .2s, right .2s;
+      position: fixed; bottom: 100px; right: 24px;
+      width: 90vw; max-width: 360px; height: 70vh; max-height: 600px;
+      background: #fff; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+      display: none; flex-direction: column; overflow: hidden; z-index: 1000;
+      transition: all .2s;
     }
     #chat-box.show { display: flex; }
 
+    /* Close X on border */
+    #chat-box .close-border {
+      position: absolute; top: 8px; right: 8px;
+      font-size: 1.2rem; color: #fff; cursor: pointer; z-index: 1001;
+    }
+
     /* Cabeçalho */
     #chat-box-header {
-      background: #0d6efd;
-      color: #fff;
-      padding: 12px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #0d6efd; color: #fff; padding: 12px;
+      font-weight: 600; display: flex; justify-content: space-between; align-items: center;
+      position: relative;
     }
     #chat-box-header .close-chat { cursor: pointer; font-size: 1.2rem; }
 
     /* Conteúdo */
-    #chat-box-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 8px;
-      overflow: hidden;
-    }
+    #chat-box-content { flex: 1; display: flex; flex-direction: column; padding: 8px; overflow: hidden; }
     #chat-log {
-      height: calc(100% - 50px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-      word-break: break-word;
+      flex: 1; overflow-y: auto; overflow-x: hidden; margin-bottom: 8px;
+      font-size: .9rem; word-break: break-word;
     }
-    #chat-log .user-msg { text-align: right; margin-bottom: 6px; }
-    #chat-log .bot-msg  { text-align: left;  margin-bottom: 6px; }
+    .user-msg { text-align: right; margin-bottom: 6px; }
+    .bot-msg  { text-align: left; margin-bottom: 6px; }
 
     /* Input e botão */
-    #chat-input-container {
-      display: flex;
-      gap: 8px;
-      padding-top: 4px;
-    }
+    #chat-input-container { display: flex; gap: 8px; padding-top: 4px; }
     #chat-input {
-      flex: 1;
-      resize: none;
-      padding: 6px 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.9rem;
+      flex: 1; resize: none; padding: 6px 8px;
+      border: 1px solid #ccc; border-radius: 4px; font-size: .9rem;
     }
     #send-button {
-      background: #0d6efd;
-      color: #fff;
-      border: none;
-      padding: 0 16px;
-      border-radius: 4px;
-      cursor: pointer;
+      background: #0d6efd; color: #fff; border: none;
+      padding: 0 16px; border-radius: 4px; cursor: pointer;
     }
-    #send-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+    #send-button:disabled { opacity: .6; cursor: not-allowed; }
 
     /* Responsivo */
-    @media (max-width: 576px) {
-      #chat-box {
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        height: 60%;
-        border-radius: 8px 8px 0 0;
-      }
-      #chat-button {
-        bottom: 16px;
-        right: 16px;
-        width: 50px;
-        height: 50px;
-      }
-      #chat-box-header {
-        padding: 8px;
-        font-size: 1rem;
-      }
-      #chat-input, #send-button {
-        font-size: 0.85rem;
-      }
+    @media(max-width:576px){
+      #chat-box{ bottom:0; right:0; width:100%; height:60%; border-radius:8px 8px 0 0; }
+      #chat-button{ bottom:16px; right:16px; width:50px; height:50px; }
+      #chat-box-header{ padding:8px; font-size:1rem; }
+      #chat-input,#send-button{ font-size:.85rem; }
     }
   </style>
 </head>
-
 <body>
   <div id="root"></div>
-
   <!-- Chat Button -->
   <div id="chat-button"><i class="fas fa-comments fa-lg"></i></div>
-
   <!-- Chat Box -->
   <div id="chat-box">
     <div id="chat-box-header">
       Chat Online
       <span class="close-chat"><i class="bi bi-x-lg"></i></span>
     </div>
+    <!-- Border Close -->
+    <span class="close-border"><i class="fa fa-times-circle"></i></span>
     <div id="chat-box-content">
       <div id="chat-log"></div>
       <div id="chat-input-container">
@@ -182,105 +117,47 @@
       </div>
     </div>
   </div>
-
-  <!-- Bibliotecas JS -->
+  <!-- JS Libraries -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="./lib/owlcarousel/owl.carousel.min.js" defer></script>
-  <script src="./lib/animate/animate.min.js" defer></script>
-  <script src="/static/js/client.js" defer></script>
   <script defer>
-    window.onerror = function(message, source) {
-      if (source && (source.endsWith('animate.min.js') || source.endsWith('client.js'))) {
-        return true;
-      }
-      return false;
-    };
-
-    const WEBHOOK_URL = 'https://desenvlab.com.br/n8n/webhook/assistent_rag_rest';
-
     document.addEventListener('DOMContentLoaded', () => {
-      const chatButton = document.getElementById('chat-button');
-      const chatBox    = document.getElementById('chat-box');
-      const closeChat  = document.querySelector('.close-chat');
-      const input      = document.getElementById('chat-input');
-      const send       = document.getElementById('send-button');
-      const log        = document.getElementById('chat-log');
+      const btn = document.getElementById('chat-button');
+      const box = document.getElementById('chat-box');
+      const hdrClose = document.querySelector('.close-chat');
+      const brdClose = document.querySelector('.close-border');
+      const input = document.getElementById('chat-input');
+      const send  = document.getElementById('send-button');
+      const log   = document.getElementById('chat-log');
+      const url   = 'https://desenvlab.com.br/n8n/webhook/assistent_rag_rest';
 
-      // Função para exibir indicador de digitação
-      function showTypingIndicator(duration = 6000) {
-        // Remove indicador anterior, se houver
-        const prev = document.getElementById('typing-indicator');
-        if (prev) prev.remove();
+      // Toggle function
+      function closeChat(){ box.classList.remove('show'); btn.innerHTML = '<i class="fas fa-comments fa-lg"></i>'; }
+      function openChat(){ box.classList.add('show'); btn.innerHTML = '<i class="fas fa-times fa-lg"></i>'; input.focus(); }
 
-        const indicator = document.createElement('div');
-        indicator.id = 'typing-indicator';
-        indicator.className = 'bot-msg blinking';
-        indicator.innerHTML = '<strong>Alguém está escrevendo...</strong>';
-        log.appendChild(indicator);
-        log.scrollTop = log.scrollHeight;
+      // Event listeners
+      btn.addEventListener('click', () => box.classList.contains('show') ? closeChat() : openChat());
+      hdrClose.addEventListener('click', closeChat);
+      brdClose.addEventListener('click', closeChat);
 
-        return new Promise(res => {
-          setTimeout(() => {
-            indicator.remove();
-            res();
-          }, duration);
-        });
-      }
-
-      // Abre o chat automaticamente e exibe saudação
-      chatBox.classList.add('show');
-      input.focus();
-      showTypingIndicator().then(() => {
-        log.innerHTML += `<div class="bot-msg"><strong>Estamos online, agora é só digitar... 🤩🤩🤩🤩</strong></div>`;
-        log.scrollTop = log.scrollHeight;
-      });
-
-      // Eventos de UI
-      chatButton.addEventListener('click', () => {
-        chatBox.classList.toggle('show');
-        if (chatBox.classList.contains('show')) input.focus();
-      });
-      closeChat.addEventListener('click', () => chatBox.classList.remove('show'));
-      input.addEventListener('input', () => {
-        send.disabled = !input.value.trim();
-      });
-
-      // Envio de mensagem
+      // Input and send logic...
+      input.addEventListener('input', () => send.disabled = !input.value.trim());
       send.addEventListener('click', async () => {
-        const msg = input.value.trim();
-        if (!msg) return;
-
-        // Exibe mensagem do usuário
+        const msg = input.value.trim(); if(!msg) return;
         log.innerHTML += `<div class="user-msg"><strong>Você:</strong> ${msg}</div>`;
-        input.value = '';
-        send.disabled = true;
-        log.scrollTop = log.scrollHeight;
-
-        // Exibe indicador antes de chamar o webhook
-        await showTypingIndicator();
-
-        try {
-          const res = await fetch(WEBHOOK_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: msg })
-          });
-          if (!res.ok) throw new Error(res.statusText);
-
-          const data = await res.json();
-          const botText = data.output || 'Sem resposta.';
-
-          log.innerHTML += `<div class="bot-msg"><strong>Bot:</strong> ${botText}</div>`;
-        } catch (err) {
-          console.error(err);
-          log.innerHTML += `<div class="bot-msg" style="color:red"><em>Erro ao obter resposta.</em></div>`;
-        }
-
-        log.scrollTop = log.scrollHeight;
+        input.value=''; send.disabled=true; log.scrollTop=log.scrollHeight;
+        const indicator = document.createElement('div'); indicator.className='bot-msg blinking'; indicator.innerHTML='<strong>Alguém está escrevendo...</strong>'; log.appendChild(indicator); log.scrollTop=log.scrollHeight;
+        await new Promise(res=>setTimeout(() => { indicator.remove(); res(); },6000));
+        try{
+          const res = await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg})});
+          if(!res.ok) throw new Error(res.statusText);
+          const data = await res.json(); log.innerHTML+=`<div class="bot-msg"><strong>Bot:</strong> ${data.output||'Sem resposta.'}</div>`;
+        }catch(e){ console.error(e); log.innerHTML+='<div class="bot-msg" style="color:red"><em>Erro ao obter resposta.</em></div>'; }
+        log.scrollTop=log.scrollHeight;
       });
+      // Auto open chat on load
+      openChat();
     });
   </script>
 </body>
-
 </html>
