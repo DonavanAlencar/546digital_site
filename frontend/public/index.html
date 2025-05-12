@@ -2,60 +2,223 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>546 Digital</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML 
-    " name="keywords">
-    <meta content="Free HTML Templates" name="description">
+  <meta charset="utf-8">
+  <title>546 Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="keywords" content="Free HTML">
+  <meta name="description" content="Free HTML Templates">
 
-    <!-- Favicon -->
-    <link href="./img/favicon.ico" rel="icon">
+  <!-- Favicon -->
+  <link href="./img/favicon.ico" rel="icon">
 
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/././././././css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
-    <link href="./lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="./lib/animate/animate.min.css" rel="stylesheet">
+  <!-- Libraries Stylesheet -->
+  <link href="./lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+  <link href="./lib/animate/animate.min.css" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="././././././css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap & Custom CSS -->
+  <link href="./css/bootstrap.min.css" rel="stylesheet">
+  <link href="./css/style.css" rel="stylesheet">
 
-    <!-- Template Stylesheet -->
-    <link href="././././././css/style.css" rel="stylesheet">
+  <style>
+    /* Botão flutuante */
+    #chat-button {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0d6efd;
+      color: #fff;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 1000;
+    }
+    #chat-button:hover { background: #0b5ed7; }
+
+    /* Caixa de chat */
+    #chat-box {
+      position: fixed;
+      bottom: 100px;
+      right: 24px;
+      width: 320px;
+      max-height: 480px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+    }
+    #chat-box.show { display: flex; }
+
+    /* Cabeçalho */
+    #chat-box-header {
+      background: #0d6efd;
+      color: #fff;
+      padding: 12px;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #chat-box-header .close-chat { cursor: pointer; font-size: 1.2rem; }
+
+    /* Conteúdo */
+    #chat-box-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+    }
+    #chat-log {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    /* Estilos de mensagem */
+    #chat-log .user-msg {
+      text-align: right;
+      margin-bottom: 6px;
+    }
+    #chat-log .bot-msg {
+      text-align: left;
+      margin-bottom: 6px;
+    }
+    #chat-input-container {
+      display: flex;
+      gap: 8px;
+    }
+    #chat-input {
+      flex: 1;
+      resize: none;
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    #send-button {
+      background: #0d6efd;
+      color: #fff;
+      border: none;
+      padding: 0 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #send-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 
 <body>
-    <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-        <div class="spinner"></div>
+  <!-- Container React -->
+  <div id="root"></div>
+
+  <!-- Conteúdo estático da página -->
+  <!-- ... -->
+
+  <!-- Chat Button -->
+  <div id="chat-button"><i class="fas fa-comments fa-lg"></i></div>
+
+  <!-- Chat Box -->
+  <div id="chat-box">
+    <div id="chat-box-header">
+      Chat Online
+      <span class="close-chat"><i class="bi bi-x-lg"></i></span>
     </div>
-    <!-- Spinner End -->
+    <div id="chat-box-content">
+      <div id="chat-log"></div>
+      <div id="chat-input-container">
+        <textarea id="chat-input" rows="2" placeholder="Digite sua mensagem..."></textarea>
+        <button id="send-button" disabled>Enviar</button>
+      </div>
+    </div>
+  </div>
 
-    <div id="root"></div>
+  <!-- Bibliotecas JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" defer></script>
+  <script src="./lib/owlcarousel/owl.carousel.min.js" defer></script>
+  <script src="./lib/animate/animate.min.js" defer></script>
+  <!-- Seu bundle React (gerado pelo build) -->
+  <script src="/static/js/client.js" defer></script>
+  <!-- Chat toggle & envio -->
+  <script defer>
+    const WEBHOOK_URL = 'https://desenvlab.com.br/n8n/webhook/db1776fe-6aa1-4f0a-a5ac-6f6b784486ea';
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square rounded back-to-top"><i class="bi bi-arrow-up"></i></a>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Garantia extra: só inicializa o React root se o container existir
+      const rootEl = document.getElementById('root');
+      if (!rootEl) {
+        console.error('Elemento #root não encontrado!');
+        return;
+      }
 
+      // Aqui você chamaria createRoot(rootEl).render(...)
+      // Exemplo:
+      // import('./path/to/your/App.js').then(({ default: App }) => {
+      //   createRoot(rootEl).render(<App />);
+      // });
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/./js/bootstrap.bundle.min.js"></script>
-    <script src="./lib/wow/wow.min.js"></script>
-    <script src="./lib/easing/easing.min.js"></script>
-    <script src="./lib/waypoints/waypoints.min.js"></script>
-    <script src="./lib/counterup/counterup.min.js"></script>
-    <script src="./lib/owlcarousel/owl.carousel.min.js"></script>
+      // Chat widget
+      const chatButton = document.getElementById('chat-button');
+      const chatBox = document.getElementById('chat-box');
+      const closeChat = document.querySelector('.close-chat');
+      const input = document.getElementById('chat-input');
+      const send = document.getElementById('send-button');
+      const log = document.getElementById('chat-log');
 
-    <!-- Template Javascript -->
-    <script src="./js/main.js"></script>
+      chatButton.addEventListener('click', () => {
+        chatBox.classList.toggle('show');
+        input.focus();
+      });
+      closeChat.addEventListener('click', () => chatBox.classList.remove('show'));
+      input.addEventListener('input', () => {
+        send.disabled = !input.value.trim();
+      });
+      send.addEventListener('click', async () => {
+        const msg = input.value.trim();
+        if (!msg) return;
+        log.innerHTML += `<div class="user-msg"><strong>Você:</strong> ${msg}</div>`;
+        input.value = '';
+        send.disabled = true;
+        log.scrollTop = log.scrollHeight;
+
+        try {
+          const res = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg })
+          });
+          if (!res.ok) throw new Error(res.statusText);
+          const data = await res.json();
+          const botText = data.response?.text || 'Sem resposta.';
+          log.innerHTML += `<div class="bot-msg"><strong>Bot:</strong> ${botText}</div>`;
+        } catch (err) {
+          console.error(err);
+          log.innerHTML += `<div class="bot-msg" style="color:red"><em>Erro ao obter resposta.</em></div>`;
+        }
+        log.scrollTop = log.scrollHeight;
+      });
+    });
+  </script>
 </body>
 
 </html>
