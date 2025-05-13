@@ -1,16 +1,22 @@
+// src/components/Form.jsx
 import React, { useState } from 'react';
-import api from '../services/api'; // veja instruções abaixo
+import api from '../services/api';
 
 export default function Form() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName]       = useState('');
+  const [email, setEmail]     = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
+
+  // sending: enquanto aguarda resposta
+  // status: null | 'success' | 'error'
   const [sending, setSending] = useState(false);
+  const [status, setStatus]   = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSending(true);
+    setStatus(null);
 
     const formData = new FormData();
     formData.append('_wpcf7_unit_tag', 'wpcf7-f0215e4a-p1-o1');
@@ -21,17 +27,28 @@ export default function Form() {
 
     try {
       await api.post('/wp-json/contact-form-7/v1/contact-forms/6/feedback', formData);
-      // limpa inputs
-      setName('');
-      setEmail('');
-      setSubject('');
-      setMessage('');
+      setName(''); setEmail(''); setSubject(''); setMessage('');
+      setStatus('success');
     } catch (err) {
-      console.error('Erro ao enviar mensagem:', err);
-      // pode exibir um alerta ou mensagem de erro aqui, se desejar
+      console.error(err.stack || err);
+      setStatus('error');
     } finally {
       setSending(false);
     }
+  };
+
+  // Retorna a mensagem de feedback após envio
+  const renderStatusMessage = () => {
+    if (sending) {
+      return <strong className="blinking">Enviando mensagem...</strong>;
+    }
+    if (status === 'success') {
+      return <strong>Mensagem enviada com sucesso!</strong>;
+    }
+    if (status === 'error') {
+      return <strong>A mensagem não foi enviada, tente novamente!</strong>;
+    }
+    return null;
   };
 
   return (
@@ -91,15 +108,13 @@ export default function Form() {
                       required
                     ></textarea>
                   </div>
-                  <div className="col-12 position-relative">
+                  <div className="col-12">
                     <button className="btn btn-dark w-100 py-3" type="submit" disabled={sending}>
                       Quero uma cotação agora!
                     </button>
-                    {sending && (
-                      <div className="mt-2 text-center">
-                        <strong className="blinking">Enviando mensagem...</strong>
-                      </div>
-                    )}
+                  </div>
+                  <div className="col-12 text-center mt-2">
+                    {renderStatusMessage()}
                   </div>
                 </div>
               </form>
