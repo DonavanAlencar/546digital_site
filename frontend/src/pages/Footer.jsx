@@ -13,12 +13,6 @@ export default function Footer() {
                   <h1 className="m-0 text-white"><i className="fa fa-user-tie me-2"></i>546Digital</h1>
                 </a>
                 <p className="mt-3 mb-4">Somos uma agência digital fora do padrão, onde inovação, estratégia e inteligência artificial se unem para criar resultados exponenciais.</p>
-                <form action="">
-                  <div className="input-group">
-                    <input type="text" className="form-control border-white p-3" placeholder="Seu E-mail" />
-                    <button className="btn btn-dark">Enviar</button>
-                  </div>
-                </form>
               </div>
             </div>
             <div className="col-lg-8 col-md-6">
