@@ -272,20 +272,49 @@
         await showTypingIndicator();
 
         try {
-          const res = await fetch(WEBHOOK_URL, {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: msg })
-          });
-          if (!res.ok) throw new Error(res.statusText);
-          const data = await res.json();
-          const botText = data.output || 'Sem resposta.';
-          log.innerHTML += `<div class="bot-msg"><strong>Ana:</strong> ${botText}</div>`;
-        } catch (err) {
-          console.error(err);
-          log.innerHTML += `<div class="bot-msg" style="color:red"><em>Erro ao obter resposta.</em></div>`;
-        } finally {
-          log.scrollTop = log.scrollHeight;
-        }
+  const res = await fetch(WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg }),
+  });
+
+  // Se deu timeout (HTTP 408)
+  if (res.status === 408) {
+    log.innerHTML += `
+      <div class="bot-msg" style="color:red">
+        <em>Estamos com um pequeno probleminha interno. Favor tente enviar o texto novamente...</em>
+      </div>
+    `;
+  }
+  // Outros erros HTTP
+  else if (!res.ok) {
+    log.innerHTML += `
+      <div class="bot-msg" style="color:red">
+        <em>Erro ao obter resposta.</em>
+      </div>
+    `;
+  }
+  // Sucesso normal
+  else {
+    const data = await res.json();
+    const botText = data.output || 'Sem resposta.';
+    log.innerHTML += `
+      <div class="bot-msg">
+        <strong>Ana:</strong> ${botText}
+      </div>
+    `;
+  }
+} catch (err) {
+  console.error(err);
+  log.innerHTML += `
+    <div class="bot-msg" style="color:red">
+      <em>Erro ao obter resposta.</em>
+    </div>
+  `;
+} finally {
+  log.scrollTop = log.scrollHeight;
+}
+
       });
     });
   </script>
