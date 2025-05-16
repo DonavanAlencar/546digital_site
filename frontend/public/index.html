@@ -189,6 +189,24 @@
   
   <script defer>
     document.addEventListener('DOMContentLoaded', () => {
+      // === Gerar/manter sessionId por aba ===
+      let sessionId = sessionStorage.getItem('sessionId');
+      if (!sessionId) {
+        // usa crypto.randomUUID se disponível, senão fallback
+        sessionId = (crypto.randomUUID ? crypto.randomUUID() : generateUUID());
+        sessionStorage.setItem('sessionId', sessionId);
+      }
+
+      function generateUUID() {
+        // fallback simples de UUIDv4
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+          const r = Math.random() * 16 | 0;
+          const v = c === 'x' ? r : (r & 0x3 | 0x8);
+          return v.toString(16);
+        });
+      }
+      // ================================
+
       const chatButton = document.getElementById('chat-button');
       const chatBox    = document.getElementById('chat-box');
       const closeChat  = document.querySelector('.close-chat');
@@ -198,8 +216,6 @@
       const WEBHOOK_URL = 'https://desenvlab.com.br/n8n/webhook/assistent_rag_rest';
 
       let audioUnlocked = false;
-
-      // Unlock audio
       function unlockAudio() {
         const chatSound = document.getElementById('chat-alert-sound');
         chatSound.play().then(() => {
@@ -212,7 +228,6 @@
       }
       document.addEventListener('click', unlockAudio);
 
-      // Typing indicator
       function showTypingIndicator(duration = 6000) {
         const prev = document.getElementById('typing-indicator');
         if (prev) prev.remove();
@@ -227,40 +242,32 @@
         });
       }
 
-      // Update chat-button icon
       function updateChatButtonIcon(open) {
         chatButton.innerHTML = open ? '<i class="fas fa-times fa-lg"></i>' : '<i class="fas fa-comments fa-lg"></i>';
       }
 
-      // Initial open chat
+      // abre o chat automaticamente
       chatBox.classList.add('show');
       updateChatButtonIcon(true);
       input.focus();
-
       showTypingIndicator().then(() => {
         log.innerHTML += `<div class="bot-msg"><strong>Estamos online, agora é só digitar... 🤩🤩🤩🤩</strong></div>`;
         log.scrollTop = log.scrollHeight;
       });
 
-      // Toggle chat
       chatButton.addEventListener('click', () => {
         const isOpen = chatBox.classList.toggle('show');
         updateChatButtonIcon(isOpen);
         if (isOpen) input.focus();
       });
-
-      // Close via header X
       closeChat.addEventListener('click', () => {
         chatBox.classList.remove('show');
         updateChatButtonIcon(false);
       });
-
-      // Enable send button
       input.addEventListener('input', () => {
         send.disabled = !input.value.trim();
       });
 
-      // Send message
       send.addEventListener('click', async () => {
         const msg = input.value.trim();
         if (!msg) return;
@@ -272,49 +279,48 @@
         await showTypingIndicator();
 
         try {
-  const res = await fetch(WEBHOOK_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: msg }),
-  });
+          const res = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId,        // envia o ID da sessão
+              message: msg
+            }),
+          });
 
-  // Se deu timeout (HTTP 408)
-  if (res.status === 408) {
-    log.innerHTML += `
-      <div class="bot-msg" style="color:red">
-        <em>Estamos com um pequeno probleminha interno. Favor tente enviar o texto novamente...</em>
-      </div>
-    `;
-  }
-  // Outros erros HTTP
-  else if (!res.ok) {
-    log.innerHTML += `
-      <div class="bot-msg" style="color:red">
-        <em>Erro ao obter resposta.</em>
-      </div>
-    `;
-  }
-  // Sucesso normal
-  else {
-    const data = await res.json();
-    const botText = data.output || 'Sem resposta.';
-    log.innerHTML += `
-      <div class="bot-msg">
-        <strong>Ana:</strong> ${botText}
-      </div>
-    `;
-  }
-} catch (err) {
-  console.error(err);
-  log.innerHTML += `
-    <div class="bot-msg" style="color:red">
-      <em>Erro ao obter resposta.</em>
-    </div>
-  `;
-} finally {
-  log.scrollTop = log.scrollHeight;
-}
-
+          if (res.status === 408) {
+            log.innerHTML += `
+              <div class="bot-msg" style="color:red">
+                <em>Estamos com um pequeno probleminha interno. Favor tente enviar o texto novamente...</em>
+              </div>
+            `;
+          }
+          else if (!res.ok) {
+            log.innerHTML += `
+              <div class="bot-msg" style="color:red">
+                <em>Erro ao obter resposta.</em>
+              </div>
+            `;
+          }
+          else {
+            const data = await res.json();
+            const botText = data.output || 'Sem resposta.';
+            log.innerHTML += `
+              <div class="bot-msg">
+                <strong>Ana:</strong> ${botText}
+              </div>
+            `;
+          }
+        } catch (err) {
+          console.error(err);
+          log.innerHTML += `
+            <div class="bot-msg" style="color:red">
+              <em>Erro ao obter resposta.</em>
+            </div>
+          `;
+        } finally {
+          log.scrollTop = log.scrollHeight;
+        }
       });
     });
   </script>
