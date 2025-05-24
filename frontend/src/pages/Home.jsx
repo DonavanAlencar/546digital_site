@@ -5,10 +5,21 @@ import Footer from './Footer';
 import NossosServicos from './NossosServicos';
 import Membros from './Membros';
 import Form from './Form';
+import ChatBot from './ChatBot';
+import Navbar from './Navbar';
 //import api from '../services/api';
 
 export default function Home() {
   return (
-      <><Topbar /><Carosel /><NossosServicos /><Membros /><Form /><Footer /></>
+    <>
+      <Topbar />
+      <Navbar />
+      <Carosel />
+      <NossosServicos />
+      <Membros />
+      <Form />
+      <Footer />
+      <ChatBot />
+    </>
   );
 }

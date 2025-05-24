@@ -1,5 +1,5 @@
 // src/components/Form.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../services/api';
 
 export default function Form() {
@@ -12,6 +12,14 @@ export default function Form() {
   // status: null | 'success' | 'error'
   const [sending, setSending] = useState(false);
   const [status, setStatus]   = useState(null);
+
+  // Adicionando ID para o formulário para rolagem suave
+  useEffect(() => {
+    const formElement = document.getElementById('contact-form');
+    if (formElement) {
+      formElement.id = 'contact-form';
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,23 +60,23 @@ export default function Form() {
   };
 
   return (
-    <div className="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div className="container-fluid py-5 wow fadeInUp" data-wow-delay="0.1s" id="contact-form">
       <div className="container py-5">
         <div className="row g-5">
           <div className="col-lg-7">
             <div className="section-title position-relative pb-3 mb-5">
-                    <h5 className="fw-bold text-primary text-uppercase">Solicite um Orçamento</h5>
+                    <h5 className="fw-bold text-uppercase" style={{ color: '#090c9b' }}>Solicite um Orçamento</h5>
                     <h1 className="mb-0">Precisa de um Orçamento Gratuito? Entre em Contato Conosco!</h1>
                 </div>
                 <div className="row gx-3">
                     <div className="col-sm-6 wow zoomIn" data-wow-delay="0.2s">
-                        <h5 className="mb-4"><i className="fa fa-reply text-primary me-3"></i>Resposta em até 24 horas</h5>
+                        <h5 className="mb-4"><i className="fa fa-reply me-3" style={{ color: '#090c9b' }}></i>Resposta em até 24 horas</h5>
                     </div>
                 </div>
                 <p className="mb-4">Oferecemos soluções de marketing digital e SEO personalizadas para aumentar a visibilidade e o desempenho do seu negócio online. Nossos serviços incluem otimização de sites, campanhas de marketing de conteúdo e estratégias de SEO para garantir que sua empresa alcance seu público-alvo e se destaque nos motores de busca. Com nossa abordagem estratégica, ajudamos a gerar mais tráfego, aumentar a conversão e maximizar seu retorno sobre investimento (ROI). Entre em contato conosco e descubra como podemos levar sua marca ao próximo nível!</p>
             </div>
           <div className="col-lg-5">
-            <div className="bg-primary rounded h-100 d-flex align-items-center p-5 wow zoomIn" data-wow-delay="0.9s">
+            <div className="rounded h-100 d-flex align-items-center p-5 wow zoomIn" data-wow-delay="0.9s" style={{ backgroundColor: '#3066be', color: 'white' }}>
               <form className="w-100" onSubmit={handleSubmit}>
                 <div className="row g-3">
                   <div className="col-xl-12">
@@ -118,7 +126,7 @@ export default function Form() {
                     ></textarea>
                   </div>
                   <div className="col-12">
-                    <button className="btn btn-dark w-100 py-3" type="submit" disabled={sending}>
+                    <button className="btn w-100 py-3" type="submit" disabled={sending} style={{ backgroundColor: '#090c9b', color: 'white' }}>
                       Quero uma cotação agora!
                     </button>
                   </div>

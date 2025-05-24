@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
   <meta charset="utf-8">
   <title>546 Digital</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="keywords" content="Free HTML">
-  <meta name="description" content="Free HTML Templates">
+  <meta name="keywords" content="Marketing Digital, SEO, Automação">
+  <meta name="description" content="546 Digital - Soluções em Marketing Digital e SEO">
 
   <!-- Favicon -->
   <link href="./img/favicon.ico" rel="icon">
@@ -29,7 +29,7 @@
   <!-- Bootstrap & Custom CSS -->
   <link href="./css/bootstrap.min.css" rel="stylesheet">
   <link href="./css/style.css" rel="stylesheet">
-
+  
   <style>
     /* Blinking effect */
     @keyframes blink {
@@ -141,6 +141,8 @@
       #chat-box {
         bottom: 0;
         right: 0;
+        left: 0;
+        margin: 0 auto;
         width: 100%;
         height: 60%;
         border-radius: 8px 8px 0 0;
@@ -183,12 +185,39 @@
     </div>
   </div>
 
-  <!-- Libraries JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" defer></script>
-  
-  <script defer>
-    document.addEventListener('DOMContentLoaded', () => {
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./lib/wow/wow.min.js"></script>
+  <script src="./lib/easing/easing.min.js"></script>
+  <script src="./lib/waypoints/waypoints.min.js"></script>
+  <script src="./lib/counterup/counterup.min.js"></script>
+  <script src="./lib/owlcarousel/owl.carousel.min.js"></script>
+
+  <!-- Template Javascript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializa o carrossel
+      if (typeof $.fn.owlCarousel !== 'undefined') {
+        $("#header-carousel").owlCarousel({
+          autoplay: true,
+          smartSpeed: 1500,
+          items: 1,
+          dots: false,
+          loop: true,
+          nav: true,
+          navText: [
+            '<span class="carousel-control-prev-icon" aria-hidden="true"></span>',
+            '<span class="carousel-control-next-icon" aria-hidden="true"></span>'
+          ]
+        });
+      }
+      
+      // Inicializa WOW.js para animações
+      if (typeof WOW !== 'undefined') {
+        new WOW().init();
+      }
+      
       // === Gerar/manter sessionId por aba ===
       let sessionId = sessionStorage.getItem('sessionId');
       if (!sessionId) {
@@ -276,7 +305,13 @@
         send.disabled = true;
         log.scrollTop = log.scrollHeight;
 
-        await showTypingIndicator();
+        // Mostra o indicador de digitação e mantém até a resposta chegar
+        const typingIndicator = document.createElement('div');
+        typingIndicator.id = 'typing-indicator';
+        typingIndicator.className = 'bot-msg blinking';
+        typingIndicator.innerHTML = '<strong>Alguém está escrevendo...</strong>';
+        log.appendChild(typingIndicator);
+        log.scrollTop = log.scrollHeight;
 
         try {
           const res = await fetch(WEBHOOK_URL, {
@@ -287,6 +322,10 @@
               message: msg
             }),
           });
+
+          // Remove o indicador de digitação após receber a resposta
+          const indicator = document.getElementById('typing-indicator');
+          if (indicator) indicator.remove();
 
           if (res.status === 408) {
             log.innerHTML += `
@@ -313,6 +352,10 @@
           }
         } catch (err) {
           console.error(err);
+          // Remove o indicador de digitação em caso de erro
+          const indicator = document.getElementById('typing-indicator');
+          if (indicator) indicator.remove();
+          
           log.innerHTML += `
             <div class="bot-msg" style="color:red">
               <em>Erro ao obter resposta.</em>
